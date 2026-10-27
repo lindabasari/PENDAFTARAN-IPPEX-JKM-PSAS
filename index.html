@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DASHBOARD PENDAFTARAN IPPEX PROJEK AKHIR JKM PSAS</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="header-logo">🎓</div>
+      <div class="header-text">
+        <p class="header-subtitle">Institut Pengajian Politeknik &amp; Komuniti</p>
+        <h1>DASHBOARD PENDAFTARAN IPPEX</h1>
+        <p class="header-dept">PROJEK AKHIR JKM PSAS — PEMBENTANGAN AKHIR</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- STAT CARDS -->
+    <section class="stats-row">
+      <div class="stat-card">
+        <span class="stat-icon">📁</span>
+        <div>
+          <p class="stat-val" id="statJumlah">0</p>
+          <p class="stat-lbl">Jumlah Projek</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">👥</span>
+        <div>
+          <p class="stat-val" id="statAhli">0</p>
+          <p class="stat-lbl">Jumlah Pelajar</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">👩‍🏫</span>
+        <div>
+          <p class="stat-val" id="statPenyelia">0</p>
+          <p class="stat-lbl">Penyelia Terlibat</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🏆</span>
+        <div>
+          <p class="stat-val stat-val-sm" id="statTop">—</p>
+          <p class="stat-lbl">Projek Terbesar</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BORANG PENDAFTARAN -->
+    <section class="card" id="sectionForm">
+      <div class="card-header">
+        <h2>📝 Daftar Projek Baru</h2>
+        <button class="btn-toggle" id="btnToggleForm" aria-expanded="true" title="Togol borang">▲</button>
+      </div>
+      <div id="formWrapper">
+        <form id="formProjek" novalidate autocomplete="off">
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="tajukProjek">Tajuk Projek <span class="req">*</span></label>
+              <input type="text" id="tajukProjek" placeholder="Masukkan tajuk projek lengkap" required />
+            </div>
+            <div class="form-group">
+              <label for="namaPenyelia">Nama Penyelia <span class="req">*</span></label>
+              <input type="text" id="namaPenyelia" placeholder="Nama pensyarah penyelia" required />
+            </div>
+          </div>
+
+          <fieldset class="form-group">
+            <legend>📐 Saiz Dimensi Projek (cm) <span class="req">*</span></legend>
+            <div class="dimensi-row">
+              <div class="dim-field">
+                <label for="panjang">Panjang</label>
+                <input type="number" id="panjang" min="0.1" step="0.1" placeholder="cm" required />
+              </div>
+              <span class="times">×</span>
+              <div class="dim-field">
+                <label for="lebar">Lebar</label>
+                <input type="number" id="lebar" min="0.1" step="0.1" placeholder="cm" required />
+              </div>
+              <span class="times">×</span>
+              <div class="dim-field">
+                <label for="tinggi">Tinggi</label>
+                <input type="number" id="tinggi" min="0.1" step="0.1" placeholder="cm" required />
+              </div>
+              <div class="vol-preview" id="volPreview"></div>
+            </div>
+          </fieldset>
+
+          <div class="form-group">
+            <label>👥 Ahli Kumpulan <span class="req">*</span></label>
+            <div id="senaraiAhli">
+              <div class="ahli-row" data-idx="0">
+                <span class="ahli-num">1</span>
+                <input type="text"  class="inp-nama"   placeholder="Nama penuh ahli" required />
+                <input type="text"  class="inp-nopend" placeholder="No. Pendaftaran (cth: 23DEM12345)" required />
+                <button type="button" class="btn-rm-ahli" disabled title="Buang ahli">✕</button>
+              </div>
+            </div>
+            <button type="button" id="btnTambahAhli" class="btn-secondary">＋ Tambah Ahli</button>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">💾 Daftar Projek</button>
+            <button type="reset"  class="btn-ghost" id="btnReset">↺ Set Semula</button>
+          </div>
+
+        </form>
+      </div>
+    </section>
+
+    <!-- SENARAI PROJEK -->
+    <section class="card" id="sectionSenarai">
+      <div class="senarai-head">
+        <h2>📋 Senarai Projek Berdaftar</h2>
+        <div class="toolbar">
+          <input type="search" id="carian" placeholder="🔍 Cari projek / ahli / penyelia…" />
+          <button class="btn-ghost no-print" id="btnCetak">🖨 Cetak</button>
+          <button class="btn-danger-ghost no-print" id="btnPadamSemua">🗑 Padam Semua</button>
+        </div>
+      </div>
+
+      <p class="sort-info">
+        📊 Disusun mengikut isipadu terbesar → terkecil &nbsp;|&nbsp;
+        <strong>No. 1 = Projek Terbesar</strong>
+      </p>
+
+      <div id="tiadaProjek" class="tiada-data">
+        <p>⚠️ Tiada projek berdaftar. Sila isi borang di atas.</p>
+      </div>
+
+      <div class="table-wrapper" id="tableWrapper" hidden>
+        <table id="jadual">
+          <thead>
+            <tr>
+              <th class="th-rank">No.</th>
+              <th>Tajuk Projek</th>
+              <th>Dimensi (cm)</th>
+              <th class="th-vol">Isipadu (cm³)</th>
+              <th>Ahli Kumpulan &amp; No. Pendaftaran</th>
+              <th>Penyelia</th>
+              <th>Tarikh Daftar</th>
+              <th class="no-print">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyJadual"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>DASHBOARD PENDAFTARAN IPPEX — PROJEK AKHIR JKM PSAS &copy; 2025 &nbsp;|&nbsp; Data disimpan secara tempatan (localStorage)</p>
+  </footer>
+
+  <!-- Modal: Padam satu projek -->
+  <div id="modalPadam" class="modal-overlay" hidden>
+    <div class="modal-box">
+      <h3>⚠️ Sahkan Padam</h3>
+      <p>Adakah anda pasti ingin memadam projek ini? Tindakan ini tidak boleh dibatalkan.</p>
+      <div class="modal-actions">
+        <button id="btnSahkanPadam" class="btn-danger">Ya, Padam</button>
+        <button id="btnBatalPadam"  class="btn-ghost">Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Padam semua -->
+  <div id="modalPadamSemua" class="modal-overlay" hidden>
+    <div class="modal-box">
+      <h3>⚠️ Padam Semua Rekod</h3>
+      <p>Tindakan ini akan memadamkan <strong>semua</strong> projek yang telah didaftarkan.</p>
+      <div class="modal-actions">
+        <button id="btnSahkanPadamSemua" class="btn-danger">Ya, Padam Semua</button>
+        <button id="btnBatalPadamSemua"  class="btn-ghost">Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
